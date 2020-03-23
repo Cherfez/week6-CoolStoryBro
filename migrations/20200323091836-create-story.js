@@ -18,6 +18,15 @@ module.exports = {
       imageUrl: {
         type: Sequelize.STRING
       },
+      homepageId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "homepages",
+          key: "id"
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL"
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

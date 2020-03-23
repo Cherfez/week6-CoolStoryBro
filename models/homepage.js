@@ -1,4 +1,5 @@
 "use strict";
+
 module.exports = (sequelize, DataTypes) => {
   const homepage = sequelize.define(
     "homepage",
@@ -8,8 +9,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       description: DataTypes.TEXT,
-      backgroundColor: DataTypes.STRING,
-      color: DataTypes.STRING
+      backgroundColor: {
+        type: DataTypes.STRING,
+        defaultValue: "#ffffff"
+      },
+      color: {
+        type: DataTypes.STRING,
+        defaultValue: "#000000"
+      }
     },
     {}
   );

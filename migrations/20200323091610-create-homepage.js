@@ -16,10 +16,12 @@ module.exports = {
         type: Sequelize.TEXT
       },
       backgroundColor: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: "#ffffff"
       },
       color: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: "#000000"
       },
       createdAt: {
         allowNull: false,
