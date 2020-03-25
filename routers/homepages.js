@@ -30,8 +30,9 @@ router.get("/:id", async (req, res) => {
   res.status(200).send({ message: "ok", homepage });
 });
 
-router.patch("/:id", auth, async (req, res) => {
-  const homepage = await Homepage.findByPk(req.params.id);
+// /:id
+router.patch("/other", auth, async (req, res) => {
+  const homepage = await Homepage.findByPk(req.user.id); //req.params.id
   if (!homepage.userId === req.user.id) {
     return res
       .status(403)
