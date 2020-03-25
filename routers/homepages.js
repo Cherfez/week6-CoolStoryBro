@@ -46,5 +46,45 @@ router.patch("/:id", auth, async (req, res) => {
 });
 
 //post story
+router.post("/stories", auth, async (req, res) => {
+  const homepage = await Homepage.findByPk(req.user.id);
+  console.log(homepage);
+
+  if (homepage === null) {
+    return res.status(404).send({ message: "This homepage does not exist" });
+  }
+
+  if (!homepage.userId === req.user.id) {
+    return res
+      .status(403)
+      .send({ message: "You are not authorized to update this homepage" });
+  }
+
+  const { name, imageUrl, content } = req.body;
+
+  if (!name) {
+    return res.status(400).send({ message: "A story must have a name" });
+  }
+
+  const story = await Story.create({
+    name,
+    imageUrl,
+    content,
+    homepageId: homepage.id
+  });
+
+  return res.status(201).send({ message: "Story created", story });
+});
+
+router.get("/", async (req, res) => {
+  const limit = req.query.limit || 10;
+  const offset = req.query.offset || 0;
+  const homepages = await Homepage.findAndCountAll({
+    limit,
+    offset,
+    include: [Story]
+  });
+  res.status(200).send({ message: "ok", homepages });
+});
 
 module.exports = router;

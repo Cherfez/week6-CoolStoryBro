@@ -24,7 +24,8 @@ router.post("/login", async (req, res, next) => {
       where: { email },
       include: {
         model: Homepage,
-        include: [Story]
+        include: [Story],
+        order: [[Story, "createdAt", "DESC"]]
       }
     });
 
@@ -91,8 +92,10 @@ router.post("/signup", async (req, res) => {
 router.get("/me", authMiddleware, async (req, res) => {
   const homepage = await Homepage.findOne({
     where: { userId: req.user.id },
-    include: [Story]
+    include: [Story],
+    order: [[Story, "createdAt", "DESC"]]
   });
+  console.log("homepage", homepage);
   // don't send back the password hash
   delete req.user.dataValues["password"];
   res.status(200).send({ ...req.user.dataValues, homepage });
