@@ -46,6 +46,25 @@ router.patch("/other", auth, async (req, res) => {
   return res.status(200).send({ homepage });
 });
 
+router.delete("/other/:storyId", auth, async (req, res, next) => {
+  const { storyId } = req.params;
+  console.log("id from router", storyId);
+  try {
+    const story = await Story.findByPk(storyId);
+
+    if (!story) {
+      return res.status(404).send("Story not found");
+    }
+
+    const result = await story.destroy();
+    console.log("result", result);
+
+    res.json({ storyId });
+  } catch (e) {
+    next(e);
+  }
+});
+
 //post story
 router.post("/stories", auth, async (req, res) => {
   const homepage = await Homepage.findByPk(req.user.id);
